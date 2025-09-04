@@ -114,7 +114,7 @@ To use the sample agent:
 
 2. Run the AutoGen agent with a task:
    ```bash
-   python sample_autogen_agent.py "Analyze the sales data and show me the top 5 products by revenue"
+   uv run python sample_autogen_agent.py "Analyze the sales data and show me the top 5 products by revenue"
    ```
 
 The agent uses the MCP workbench to access the server's tools and can perform complex data analysis tasks through conversational commands.
