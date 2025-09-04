@@ -100,6 +100,25 @@ salesperson_performance = df.groupby('salesperson')['revenue'].sum().sort_values
 print(f"\nTop Salesperson:\n{salesperson_performance.head()}")
 ```
 
+## Sample AutoGen Agent
+
+A sample AutoGen agent (`sample_autogen_agent.py`) is included that demonstrates how to use this MCP server with Microsoft's AutoGen framework. The agent connects to the server running in SSE mode and can analyze tabular data through natural language commands.
+
+To use the sample agent:
+
+1. Start the MCP server in SSE mode:
+   ```bash
+   export FASTMCP_TRANSPORT=sse
+   uv run python main.py
+   ```
+
+2. Run the AutoGen agent with a task:
+   ```bash
+   python sample_autogen_agent.py "Analyze the sales data and show me the top 5 products by revenue"
+   ```
+
+The agent uses the MCP workbench to access the server's tools and can perform complex data analysis tasks through conversational commands.
+
 ## Sandboxing Features
 
 The server uses RestrictedPython to provide a sandboxed execution environment with some restrictions:
