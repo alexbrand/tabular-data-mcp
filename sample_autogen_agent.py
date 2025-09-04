@@ -14,11 +14,11 @@ You have access to a tool that allows you to run python code in a secure sandbox
 
 
 async def main(task: str):
-    tabular_mcp_server = SseServerParams(url="http://localhost:8000/sse")
+    tabular_data_mcp_server = SseServerParams(url="http://localhost:8000/sse")
 
-    async with McpWorkbench(tabular_mcp_server) as workbench:
+    async with McpWorkbench(tabular_data_mcp_server) as workbench:
         model_client = OpenAIChatCompletionClient(
-            #model="gpt-4o-2024-08-06",
+            # model="gpt-4o-2024-08-06",
             model="gpt-4.1-2025-04-14",
             # api_key="sk-...", # Optional if you have an OPENAI_API_KEY env variable set.
         )
@@ -39,9 +39,10 @@ async def main(task: str):
 
         await Console(team.run_stream(task=task))
 
+
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Run autogen agent with a custom task")
     parser.add_argument("task", help="The task for the agent to perform")
     args = parser.parse_args()
-    
+
     asyncio.run(main(args.task))

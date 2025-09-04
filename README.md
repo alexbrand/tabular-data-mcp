@@ -1,4 +1,4 @@
-# tabular-mcp
+# tabular-data-mcp
 
 MCP Server that enables agents to work with tabular data contained within CSV and Excel files.
 
@@ -124,12 +124,12 @@ uv run python main.py
 ### Docker
 ```bash
 # Stdio mode
-docker run --rm -v ./data:/app/data tabular-mcp
+docker run --rm -v ./data:/app/data tabular-data-mcp
 
 # SSE mode
 docker run --rm -p 8000:8000 -v ./data:/app/data \
   -e FASTMCP_TRANSPORT=sse \
-  tabular-mcp
+  tabular-data-mcp
 ```
 
 ## Dependencies

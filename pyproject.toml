@@ -1,5 +1,5 @@
 [project]
-name = "tabular-mcp"
+name = "tabular-data-mcp"
 version = "0.1.0"
 description = "Add your description here"
 readme = "README.md"

@@ -1711,7 +1711,7 @@ wheels = [
 ]
 
 [[package]]
-name = "tabular-mcp"
+name = "tabular-data-mcp"
 version = "0.1.0"
 source = { virtual = "." }
 dependencies = [

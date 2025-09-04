@@ -20,7 +20,10 @@ from RestrictedPython.PrintCollector import PrintCollector
 
 # Configure logging with environment variable control
 log_level = os.getenv("LOG_LEVEL", "INFO").upper()
-logging.basicConfig(level=getattr(logging, log_level, logging.INFO), format='%(asctime)s - %(levelname)s - %(message)s')
+logging.basicConfig(
+    level=getattr(logging, log_level, logging.INFO),
+    format="%(asctime)s - %(levelname)s - %(message)s",
+)
 
 # Workaround for https://github.com/modelcontextprotocol/python-sdk/issues/1273
 # Environment variables FASTMCP_HOST and FASTMCP_PORT don't work automatically,
@@ -28,7 +31,7 @@ logging.basicConfig(level=getattr(logging, log_level, logging.INFO), format='%(a
 host = os.getenv("FASTMCP_HOST", "0.0.0.0")
 port = int(os.getenv("FASTMCP_PORT", "8000"))
 
-mcp = FastMCP("tabular-mcp", host=host, port=port)
+mcp = FastMCP("tabular-data-mcp", host=host, port=port)
 
 # Global configuration
 DATA_DIRECTORY = "./data"
@@ -272,16 +275,16 @@ def run_python_code(code: str) -> str:
     File access is restricted to the ./data directory only.
 
     Do not include any import statements in the code, as these are not allowed and it will fail the code execution.
-"""
-    
+    """
+
     # Log the code being executed for debugging
     logging.debug("=" * 60)
     logging.debug("EXECUTING PYTHON CODE:")
     logging.debug("=" * 60)
-    for i, line in enumerate(code.split('\n'), 1):
+    for i, line in enumerate(code.split("\n"), 1):
         logging.debug(f"{i:3d} | {line}")
     logging.debug("=" * 60)
-    
+
     try:
         # Compile the code using RestrictedPython
         compiled_code = compile_restricted_exec(code)
