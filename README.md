@@ -15,16 +15,41 @@ The server provides sandboxed execution of Python code with data science librari
 - **`run_python_code`** - Executes Python code in a sandboxed environment with pandas, numpy, matplotlib, and openpyxl
 - **`list_available_python_libs`** - Shows available libraries in the execution environment
 
-## Usage
+## Running
 
-1. Add CSV or Excel files to the `./data` directory
-2. Use `list_data_files` to see available files
-3. Use `run_python_code` to execute Python code - you'll need to load files manually:
-   ```python
-   import pandas as pd
-   df = pd.read_csv('./data/your_file.csv')
-   print(df.head())
-   ```
+### Stdio Mode (Default)
+```bash
+uv run python main.py
+```
+
+### SSE Mode (HTTP Server)
+```bash
+# Set environment variables for SSE mode
+export FASTMCP_TRANSPORT=sse
+export FASTMCP_HOST=127.0.0.1  # optional, defaults to 127.0.0.1
+export FASTMCP_PORT=8000       # optional, defaults to 8000
+
+uv run python main.py
+```
+
+### Environment Variables
+
+- `FASTMCP_TRANSPORT`: Transport mode (`stdio` or `sse`, defaults to `stdio`)
+- `FASTMCP_HOST`: Host for SSE mode (defaults to `127.0.0.1`)
+- `FASTMCP_PORT`: Port for SSE mode (defaults to `8000`)
+- `LOG_LEVEL`: Logging level (`DEBUG`, `INFO`, `WARNING`, `ERROR`, defaults to `INFO`)
+  - Set to `DEBUG` to see detailed logging including the Python code being executed
+
+### Docker
+```bash
+# Stdio mode
+docker run --rm -v ./data:/app/data tabular-data-mcp
+
+# SSE mode
+docker run --rm -p 8000:8000 -v ./data:/app/data \
+  -e FASTMCP_TRANSPORT=sse \
+  tabular-data-mcp
+```
 
 ## Example
 
@@ -95,42 +120,6 @@ The server uses RestrictedPython to provide a sandboxed execution environment wi
 - System introspection functions
 
 **Note**: These restrictions are best-effort and may not prevent all potential security issues. This sandboxing should not be relied upon for security-critical applications.
-
-## Running
-
-### Stdio Mode (Default)
-```bash
-uv run python main.py
-```
-
-### SSE Mode (HTTP Server)
-```bash
-# Set environment variables for SSE mode
-export FASTMCP_TRANSPORT=sse
-export FASTMCP_HOST=127.0.0.1  # optional, defaults to 127.0.0.1
-export FASTMCP_PORT=8000       # optional, defaults to 8000
-
-uv run python main.py
-```
-
-### Environment Variables
-
-- `FASTMCP_TRANSPORT`: Transport mode (`stdio` or `sse`, defaults to `stdio`)
-- `FASTMCP_HOST`: Host for SSE mode (defaults to `127.0.0.1`)
-- `FASTMCP_PORT`: Port for SSE mode (defaults to `8000`)
-- `LOG_LEVEL`: Logging level (`DEBUG`, `INFO`, `WARNING`, `ERROR`, defaults to `INFO`)
-  - Set to `DEBUG` to see detailed logging including the Python code being executed
-
-### Docker
-```bash
-# Stdio mode
-docker run --rm -v ./data:/app/data tabular-data-mcp
-
-# SSE mode
-docker run --rm -p 8000:8000 -v ./data:/app/data \
-  -e FASTMCP_TRANSPORT=sse \
-  tabular-data-mcp
-```
 
 ## Dependencies
 
