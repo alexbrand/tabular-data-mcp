@@ -8,8 +8,7 @@ dependencies = [
     "mcp[cli]>=1.13.1",
     "pandas",
     "openpyxl",
-    "mcp-run-python",
+    "numpy",
+    "matplotlib",
 ]
 
-[tool.uv.sources]
-mcp-run-python = { path = "vendor/mcp_run_python", editable = true }

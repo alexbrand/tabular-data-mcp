@@ -2,16 +2,18 @@
 
 MCP Server that enables agents to work with tabular data contained within CSV and Excel files.
 
+⚠️ **EXPERIMENTAL**: This server executes Python code directly without sandboxing. Use with extreme caution and only in isolated/controlled environments.
+
 ## Overview
 
-The server provides secure execution of Python code in a sandboxed environment with data science libraries pre-installed. Data files are stored in a `./data` directory and must be loaded manually by the consumer.
+The server provides direct execution of Python code with data science libraries available. Data files are stored in a `./data` directory and must be loaded manually by the consumer.
 
 ### Tools
 
 - **`list_data_files`** - Lists all CSV and Excel files in the data directory
 - **`list_sheets`** - Lists all sheets in an Excel file with dimensions
-- **`run_python_code`** - Executes Python code in a secure sandbox with pandas, numpy, matplotlib, and openpyxl
-- **`list_available_python_libs`** - Shows available libraries in the sandbox environment
+- **`run_python_code`** - Executes Python code directly with pandas, numpy, matplotlib, and openpyxl
+- **`list_available_python_libs`** - Shows available libraries in the execution environment
 
 ## Usage
 
@@ -73,5 +75,5 @@ docker run --rm -p 8000:8000 -v ./data:/app/data \
 ## Dependencies
 
 - [MCP Python SDK](https://github.com/modelcontextprotocol/python-sdk) (FastMCP)
-- [MCP Run Python](https://github.com/pydantic/mcp-run-python) (code sandbox)
+- pandas, numpy, matplotlib, openpyxl (data science libraries)
 

@@ -1,11 +1,14 @@
 import os
 import glob
 import logging
+import sys
+import io
+import traceback
+from contextlib import redirect_stdout, redirect_stderr
 from pathlib import Path
 from typing import List, Dict, Any, Optional
 import pandas as pd
 from mcp.server.fastmcp import FastMCP
-from mcp_run_python import code_sandbox
 
 # Workaround for https://github.com/modelcontextprotocol/python-sdk/issues/1273
 # Environment variables FASTMCP_HOST and FASTMCP_PORT don't work automatically,
@@ -75,51 +78,72 @@ def list_sheets(filename: str) -> str:
         return f"Error reading Excel file: {str(e)}"
 
 @mcp.tool()
-async def run_python_code(code: str) -> str:
-    """Execute Python code in a secure sandbox"""
+def run_python_code(code: str) -> str:
+    """Execute Python code directly (no sandboxing)"""
     try:
-        # Run code in sandbox with data science dependencies
-        dependencies = ['pandas', 'numpy', 'matplotlib', 'openpyxl']
+        # Capture stdout and stderr
+        stdout_buffer = io.StringIO()
+        stderr_buffer = io.StringIO()
         
-        async with code_sandbox(dependencies=dependencies) as sandbox:
-            result = await sandbox.eval(code)
+        # Create a namespace with common data science libraries
+        namespace = {
+            '__builtins__': __builtins__,
+            'pd': pd,
+            'pandas': pd,
+            'os': os,
+            'glob': glob,
+            'Path': Path,
+        }
+        
+        # Try to import additional libraries that might be available
+        try:
+            import numpy as np
+            namespace['np'] = np
+            namespace['numpy'] = np
+        except ImportError:
+            pass
             
-            # Check result status and handle accordingly
-            if result['status'] == 'success':
-                # Handle successful execution
-                output_parts = []
-                
-                # Add any output from the execution
-                if result['output']:
-                    output_parts.extend(result['output'])
-                
-                # Add return value if present
-                if result['return_value'] is not None:
-                    output_parts.append(f"Return value: {result['return_value']}")
-                
-                if output_parts:
-                    return "\n".join(output_parts)
-                else:
-                    return "Code executed successfully (no output produced)"
-                    
-            elif result['status'] in ['install-error', 'run-error']:
-                # Handle errors
-                error_msg = f"Execution failed ({result['status']})"
-                if result['output']:
-                    error_msg += f":\n{chr(10).join(result['output'])}"
-                if result['error']:
-                    error_msg += f"\nError: {result['error']}"
-                return error_msg
-            else:
-                return f"Unknown execution status: {result.status}"
-                
+        try:
+            import matplotlib.pyplot as plt
+            namespace['plt'] = plt
+            namespace['matplotlib'] = __import__('matplotlib')
+        except ImportError:
+            pass
+            
+        try:
+            import openpyxl
+            namespace['openpyxl'] = openpyxl
+        except ImportError:
+            pass
+        
+        # Execute the code with output capture
+        with redirect_stdout(stdout_buffer), redirect_stderr(stderr_buffer):
+            exec(code, namespace)
+        
+        # Get captured output
+        stdout_output = stdout_buffer.getvalue()
+        stderr_output = stderr_buffer.getvalue()
+        
+        # Combine outputs
+        output_parts = []
+        if stdout_output:
+            output_parts.append(stdout_output.rstrip())
+        if stderr_output:
+            output_parts.append(f"stderr: {stderr_output.rstrip()}")
+        
+        if output_parts:
+            return "\n".join(output_parts)
+        else:
+            return "Code executed successfully (no output produced)"
+            
     except Exception as e:
-        logging.exception("Error executing Python code in sandbox")
-        return f"Error executing Python code in sandbox: {str(e)}"
+        # Get the full traceback for debugging
+        error_traceback = traceback.format_exc()
+        return f"Error executing Python code:\n{error_traceback}"
 
 @mcp.tool()
 def list_available_python_libs() -> str:
-    """List available Python libraries in the sandbox environment"""
+    """List available Python libraries in the execution environment"""
     libraries = [
         "pandas - Data manipulation and analysis",
         "numpy - Numerical computing", 
@@ -128,7 +152,7 @@ def list_available_python_libs() -> str:
         "Standard library: os, json, csv, datetime, re, math, statistics, io, pathlib"
     ]
     
-    result = "Available Python libraries in sandbox:\n"
+    result = "Available Python libraries:\n"
     result += "\n".join([f"• {lib}" for lib in libraries])
     result += "\n\nNote: Use list_data_files and list_sheets tools to see available data files."
     result += "\nYou'll need to load data files manually in your code using pandas.read_csv() or pandas.read_excel()."
