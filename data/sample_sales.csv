@@ -1,0 +1,26 @@
+date,product,category,quantity,price,region,salesperson
+2024-01-15,Laptop Pro,Electronics,2,1299.99,North,Alice Johnson
+2024-01-16,Office Chair,Furniture,5,249.99,South,Bob Smith
+2024-01-17,Smartphone,Electronics,3,799.99,East,Carol Davis
+2024-01-18,Standing Desk,Furniture,1,599.99,West,David Wilson
+2024-01-19,Tablet,Electronics,4,399.99,North,Alice Johnson
+2024-01-20,Coffee Maker,Appliances,2,89.99,South,Eve Brown
+2024-01-21,Headphones,Electronics,6,199.99,East,Carol Davis
+2024-01-22,Bookshelf,Furniture,3,149.99,West,David Wilson
+2024-01-23,Monitor,Electronics,2,299.99,North,Alice Johnson
+2024-01-24,Microwave,Appliances,1,129.99,South,Bob Smith
+2024-01-25,Keyboard,Electronics,8,79.99,East,Carol Davis
+2024-01-26,Lamp,Furniture,4,49.99,West,David Wilson
+2024-01-27,Speaker,Electronics,3,149.99,North,Alice Johnson
+2024-01-28,Blender,Appliances,2,69.99,South,Eve Brown
+2024-01-29,Mouse,Electronics,10,29.99,East,Carol Davis
+2024-01-30,Desk Pad,Furniture,7,19.99,West,David Wilson
+2024-02-01,Gaming Chair,Furniture,2,399.99,North,Alice Johnson
+2024-02-02,Air Fryer,Appliances,1,199.99,South,Bob Smith
+2024-02-03,Webcam,Electronics,4,89.99,East,Carol Davis
+2024-02-04,Plant Pot,Home Decor,12,24.99,West,David Wilson
+2024-02-05,USB Hub,Electronics,6,34.99,North,Alice Johnson
+2024-02-06,Toaster,Appliances,3,79.99,South,Eve Brown
+2024-02-07,Cable Tray,Furniture,5,39.99,East,Carol Davis
+2024-02-08,Wall Clock,Home Decor,8,29.99,West,David Wilson
+2024-02-09,Power Bank,Electronics,7,49.99,North,Alice Johnson

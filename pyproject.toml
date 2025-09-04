@@ -1,0 +1,15 @@
+[project]
+name = "tabular-mcp"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "mcp[cli]>=1.13.1",
+    "pandas",
+    "openpyxl",
+    "mcp-run-python",
+]
+
+[tool.uv.sources]
+mcp-run-python = { path = "vendor/mcp_run_python", editable = true }
