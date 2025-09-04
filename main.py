@@ -213,12 +213,12 @@ def list_data_files() -> str:
     for file_path in csv_files:
         filename = os.path.basename(file_path)
         file_size = os.path.getsize(file_path)
-        all_files.append(f"📄 {filename} (CSV, {file_size} bytes)")
+        all_files.append(f"{filename} (CSV, {file_size} bytes)")
 
     for file_path in excel_files:
         filename = os.path.basename(file_path)
         file_size = os.path.getsize(file_path)
-        all_files.append(f"📊 {filename} (Excel, {file_size} bytes)")
+        all_files.append(f"{filename} (Excel, {file_size} bytes)")
 
     if not all_files:
         return "No CSV or Excel files found in the data directory. Please add files to ./data/"
@@ -245,7 +245,7 @@ def list_sheets(filename: str) -> str:
         for sheet in sheets:
             df = pd.read_excel(file_path, sheet_name=sheet)
             rows, cols = df.shape
-            sheet_info.append(f"📋 {sheet} ({rows} rows, {cols} columns)")
+            sheet_info.append(f"{sheet} ({rows} rows, {cols} columns)")
 
         return f"Sheets in '{filename}':\n" + "\n".join(sheet_info)
 
@@ -363,7 +363,7 @@ def list_available_python_libs() -> str:
     ]
 
     result = "Available Python libraries:\n"
-    result += "\n".join([f"• {lib}" for lib in libraries])
+    result += "\n".join([f"- {lib}" for lib in libraries])
     result += "\n\nNote: Use list_data_files and list_sheets tools to see available data files."
     result += "\nYou'll need to load data files manually in your code using pandas.read_csv() or pandas.read_excel()."
 
