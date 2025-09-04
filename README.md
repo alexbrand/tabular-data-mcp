@@ -113,6 +113,14 @@ export FASTMCP_PORT=8000       # optional, defaults to 8000
 uv run python main.py
 ```
 
+### Environment Variables
+
+- `FASTMCP_TRANSPORT`: Transport mode (`stdio` or `sse`, defaults to `stdio`)
+- `FASTMCP_HOST`: Host for SSE mode (defaults to `127.0.0.1`)
+- `FASTMCP_PORT`: Port for SSE mode (defaults to `8000`)
+- `LOG_LEVEL`: Logging level (`DEBUG`, `INFO`, `WARNING`, `ERROR`, defaults to `INFO`)
+  - Set to `DEBUG` to see detailed logging including the Python code being executed
+
 ### Docker
 ```bash
 # Stdio mode
