@@ -18,6 +18,10 @@ from RestrictedPython.Guards import (
 )
 from RestrictedPython.PrintCollector import PrintCollector
 
+# Configure logging with environment variable control
+log_level = os.getenv("LOG_LEVEL", "INFO").upper()
+logging.basicConfig(level=getattr(logging, log_level, logging.INFO), format='%(asctime)s - %(levelname)s - %(message)s')
+
 # Workaround for https://github.com/modelcontextprotocol/python-sdk/issues/1273
 # Environment variables FASTMCP_HOST and FASTMCP_PORT don't work automatically,
 # so we read them manually and pass to constructor
@@ -48,6 +52,7 @@ def create_safe_namespace():
 
     # Add essential guards for item access
     namespace["_getitem_"] = lambda obj, index: obj[index]
+    namespace["_getiter_"] = iter
     namespace["_getattr_"] = getattr
     namespace["_write_"] = lambda x: x
 
@@ -264,7 +269,19 @@ def run_python_code(code: str) -> str:
     - openpyxl
     - Standard library: json, math, statistics, datetime, re
 
-    File access is restricted to the ./data directory only."""
+    File access is restricted to the ./data directory only.
+
+    Do not include any import statements in the code, as these are not allowed and it will fail the code execution.
+"""
+    
+    # Log the code being executed for debugging
+    logging.debug("=" * 60)
+    logging.debug("EXECUTING PYTHON CODE:")
+    logging.debug("=" * 60)
+    for i, line in enumerate(code.split('\n'), 1):
+        logging.debug(f"{i:3d} | {line}")
+    logging.debug("=" * 60)
+    
     try:
         # Compile the code using RestrictedPython
         compiled_code = compile_restricted_exec(code)
