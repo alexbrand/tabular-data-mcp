@@ -10,5 +10,11 @@ dependencies = [
     "openpyxl",
     "numpy",
     "matplotlib",
+    "RestrictedPython>=7.5",
+]
+
+[dependency-groups]
+dev = [
+    "ruff>=0.12.11",
 ]
 
